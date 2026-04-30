@@ -36,6 +36,12 @@ The application will automatically create the database tables and seed the initi
 - Soft delete — records are never permanently removed
 - Unique phone and email validation
 
+## Database
+
+The application uses **MariaDB 10.6** in production, configured via the connection string in `appsettings.json`.
+
+For local development, SQLite is used instead. The `appsettings.Development.json` overrides the connection string to use a local `contacts_dev.db` file, so no MariaDB setup is needed to run the project locally.
+
 ## Running tests
 
 ```bash

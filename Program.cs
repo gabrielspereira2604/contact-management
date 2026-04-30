@@ -39,8 +39,6 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Contacts}/{action=Index}/{id?}");
 
-app.MapRazorPages();
-
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -50,6 +48,17 @@ using (var scope = app.Services.CreateScope())
     {
         dbContext.Database.OpenConnection();
         dbContext.Database.EnsureCreated();
+    }
+
+    var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
+
+    const string adminEmail = "admin@contacts.pt";
+    const string adminPassword = "Admin@123";
+
+    if (await userManager.FindByEmailAsync(adminEmail) == null)
+    {
+        var admin = new IdentityUser { UserName = adminEmail, Email = adminEmail };
+        await userManager.CreateAsync(admin, adminPassword);
     }
 }
 

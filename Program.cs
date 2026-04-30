@@ -8,7 +8,12 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("MariaDB");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+{
+    if (connectionString!.StartsWith("Data Source="))
+        options.UseSqlite(connectionString);
+    else
+        options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+});
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 {

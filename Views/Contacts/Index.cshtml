@@ -1,0 +1,56 @@
+@model IEnumerable<ContactManagement.Models.Contact>
+@{
+    ViewData["Title"] = "Contacts";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="mb-0">Contacts</h4>
+    @if (User.Identity!.IsAuthenticated)
+    {
+        <a asp-action="Create" class="btn btn-dark">+ New Contact</a>
+    }
+</div>
+
+@if (!Model.Any())
+{
+    <div class="text-center text-muted py-5">
+        <p>No contacts found.</p>
+    </div>
+}
+else
+{
+    <div class="card shadow-sm">
+        <table class="table table-hover mb-0">
+            <thead class="table-dark">
+                <tr>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var contact in Model)
+                {
+                    <tr>
+                        <td class="align-middle">@contact.Name</td>
+                        <td class="align-middle">@contact.Phone</td>
+                        <td class="align-middle">@contact.Email</td>
+                        <td class="text-end align-middle">
+                            <a asp-action="Details" asp-route-id="@contact.Id" class="btn btn-sm btn-outline-secondary">Details</a>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <a asp-action="Edit" asp-route-id="@contact.Id" class="btn btn-sm btn-outline-primary">Edit</a>
+                                <form asp-action="Delete" asp-route-id="@contact.Id" method="post" class="d-inline">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-sm btn-outline-danger"
+                                        onclick="return confirm('Delete this contact?')">Delete</button>
+                                </form>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

@@ -18,6 +18,9 @@ out/
 .DS_Store
 Thumbs.db
 
+## Local database
+*.db
+
 ## Riders / VS
 .idea/
 *.DotSettings.user

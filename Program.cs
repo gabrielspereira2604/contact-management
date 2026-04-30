@@ -55,10 +55,9 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
     var dbContext = services.GetService<ApplicationDbContext>();
 
-    if (dbContext != null && dbContext.Database.GetDbConnection().State != ConnectionState.Open)
+    if (dbContext != null)
     {
-        dbContext.Database.OpenConnection();
-        dbContext.Database.EnsureCreated();
+        dbContext.Database.Migrate();
     }
 
     var userManager = services.GetRequiredService<UserManager<IdentityUser>>();

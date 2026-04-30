@@ -21,7 +21,6 @@ public class ContactsController : Controller
         return View(contacts);
     }
 
-    [Authorize]
     public async Task<IActionResult> Details(int id)
     {
         var contact = await _context.Contacts.FindAsync(id);
